@@ -1,6 +1,7 @@
 import torch
 import cv2
-
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 from .Basic import *
 
 class pCR_Trainer(Basic_Trainer):
@@ -198,4 +199,40 @@ class pCR_Trainer(Basic_Trainer):
             self.logger.info('test accuracy: {:.4f} \t f1 score: {:.4f}'.format(results_test["accuracy"], results_test["f1"]))
             self.logger.info('test precision: {:.4f} \t test recall: {:.4f}'.format(results_test["precision"], results_test["recall"]))
             self.logger.info('test sensitivity: {:.4f} \t test specificity: {:.4f}'.format(results_test["sensitivity"], results_test["specificity"]))
+
+        y_pred_res= [] # 创建一个空列表
+        for value in results_df.predicted_label.values.astype(int):
+            y_pred_res.append(value)# 将值添加到列表中
+        y_pred=[]
+        for num in y_pred_res:
+            y_pred.append(str(num))
+        
+        y_true_res=[]
+        for value in results_df.true_label.values.astype(int):
+            y_true_res.append(value) # 将值添加到列表中
+        y_true=[]
+        for num in y_true_res:
+            y_true.append(str(num))
+        C = confusion_matrix(y_true, y_pred, labels=['0','1']) # 可将'1'等替换成自己的类别，如'cat'。
+        plt.matshow(C, cmap=plt.cm.Reds) # 根据最下面的图按自己需求更改颜色
+        
+        TP_index = [i for i in range(len(y_pred)) if y_pred[i] == '1' and y_true[i] == '1']
+        TN_index = [i for i in range(len(y_pred)) if y_pred[i] == '0' and y_true[i] == '0']
+        FP_index = [i for i in range(len(y_pred)) if y_pred[i] == '1' and y_true[i] == '0']
+        FN_index = [i for i in range(len(y_pred)) if y_pred[i] == '0' and y_true[i] == '1']
+        print("TP_index",TP_index)
+        print("TN_index",TN_index)
+        print("FP_index",FP_index)
+        print("FN_index",FN_index)
+        for i in range(len(C)):
+            for j in range(len(C)):
+                plt.annotate(C[j, i], xy=(i, j), horizontalalignment='center', verticalalignment='center')
+        plt.ylabel('True label')
+        plt.xlabel('Predicted label')
+        #plt.show()
+        if plt.savefig==True:
+            plt.savefig("../Gradcam-output/confusion_matrix/T2fold2_lr3_r18.png")
+
+
+
         return results_test

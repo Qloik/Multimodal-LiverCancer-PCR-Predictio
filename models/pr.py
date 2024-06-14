@@ -95,7 +95,6 @@ class pCRModel(nn.Module):
 
        # 将两个模态的特征以及深度卷积结果拼接在一起
         f_con = torch.cat([torch.flatten(f_t1_start, start_dim=1),
-            
                            torch.flatten(f_t1_end, start_dim=1),
 
                     

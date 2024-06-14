@@ -14,10 +14,10 @@ from pytorch_grad_cam.utils.image import show_cam_on_image
 if __name__ == '__main__':
     model= models.resnet18(pretrained=True)
     model.eval()
-    target_layers=[model.layer4[-1].conv2]
+    target_layers=[model.layer1[-1].conv2]
     print(model)
 
-    origin_img = cv2.imread('./data_content/T1+T2+T1V/A62_0_start_T1V_3.png')
+    origin_img = cv2.imread('./data_content/T2_ann_imgs_0501/B10_1_end_T2_1.png')
     rgb_img = cv2.cvtColor(origin_img, cv2.COLOR_BGR2RGB)
 
     trans = transforms.Compose([

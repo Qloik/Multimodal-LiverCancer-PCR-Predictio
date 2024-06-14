@@ -88,6 +88,7 @@ class pCR_Dataset(data.Dataset):
         if self.istrain == 'test':
             im_start = self.transform_test(im_start)
             im_end = self.transform_test(im_end)
+            
         else:
             im_start = self.transform(im_start)
             im_end = self.transform(im_end)
@@ -95,6 +96,7 @@ class pCR_Dataset(data.Dataset):
         # 将数据放入字典
         data['t1_start'] = im_start if 'T2' in data['start_filename'] else im_end  # 根据文件名判断模态
         data['t1_end'] = im_end if 'T2' in data['end_filename'] else im_start  # 根据文件名判断模态
+     
         # data['t2_start'] = im_start if 'T2' in data['start_filename'] else im_end  # 根据文件名判断模态
         # data['t2_end'] = im_end if 'T2' in data['end_filename'] else im_start  # 根据文件名判断模态
         # data['t3_start'] = im_start if 'T3' in data['start_filename'] else im_end  # 根据文件名判断模态
