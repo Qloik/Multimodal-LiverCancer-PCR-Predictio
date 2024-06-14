@@ -31,11 +31,11 @@ class pCR_Dataset(data.Dataset):
         self._get_data_path()
 
     def _get_data_path(self):
-        # with open(f'./data/data_fold_0308.json', 'r') as inf:
-        with open(f'./data/data_fold_0423.json', 'r') as inf:
+        #with open(f'./data/data_fold_0308.json', 'r') as inf:
+        with open(f'./data/data_fold_0506.json', 'r') as inf:
         # with open(f'../data/data_fold.json', 'r') as inf:
             data_dic = json.load(inf)
-        with open(f'./data/clinic_data.json', 'r') as inf:
+        with open(f'./data/clinic_data_0507.json', 'r') as inf:
             clinic_data_dic = json.load(inf)
         data_dic = data_dic[self.istrain][str(self.args.fold)]
         self.gt_labels = list()
@@ -51,8 +51,8 @@ class pCR_Dataset(data.Dataset):
             if head in data_dic and 'start' in image and any(modality in image for modality in self.args.modality):
                 if head == 'A23':
                     continue
-                # if head == 'A96':
-                #    continue
+                if head == 'A96':
+                    continue
                 end_filename = re.sub('start', 'end', image)
                 self.filenames.append(head)
                 self.subjects_start.append(os.path.join(self.base_dir, image))
@@ -88,19 +88,18 @@ class pCR_Dataset(data.Dataset):
         if self.istrain == 'test':
             im_start = self.transform_test(im_start)
             im_end = self.transform_test(im_end)
-            
+            # print(data['end_filename'])
         else:
             im_start = self.transform(im_start)
             im_end = self.transform(im_end)
 
         # 将数据放入字典
         data['t1_start'] = im_start if 'T2' in data['start_filename'] else im_end  # 根据文件名判断模态
-        data['t1_end'] = im_end if 'T2' in data['end_filename'] else im_start  # 根据文件名判断模态
-     
-        # data['t2_start'] = im_start if 'T2' in data['start_filename'] else im_end  # 根据文件名判断模态
-        # data['t2_end'] = im_end if 'T2' in data['end_filename'] else im_start  # 根据文件名判断模态
-        # data['t3_start'] = im_start if 'T3' in data['start_filename'] else im_end  # 根据文件名判断模态
-        # data['t3_end'] = im_end if 'T3' in data['end_filename'] else im_start  # 根据文件名判断模态
+        data['t1_end'] = im_end  if 'T2' in data['end_filename'] else im_start # 根据文件名判断模态
+        data['t2_start'] = im_start if 'T1V' in data['start_filename'] else im_end  # 根据文件名判断模态
+        data['t2_end'] = im_end if 'T1V' in data['end_filename'] else im_start  # 根据文件名判断模态
+        #data['t3_start'] = im_start if 'T3' in data['start_filename'] else im_end  # 根据文件名判断模态
+        #data['t3_end'] = im_end if 'T3' in data['end_filename'] else im_start  # 根据文件名判断模态
 
         
         return data

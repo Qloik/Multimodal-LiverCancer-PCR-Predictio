@@ -43,21 +43,22 @@ class pCRModel(nn.Module):
         self.encoder_t1_start = self.get_model(resnet1)
         resnet2 = models.resnet18(pretrained=True)
         self.encoder_t1_end = self.get_model(resnet2)
-        # resnet3 = models.resnet18(pretrained=True)
-        # self.encoder_t2_start = self.get_model(resnet3)
-        # resnet4 = models.resnet18(pretrained=True)
-        # self.encoder_t2_end = self.get_model(resnet4)
-        # resnet5 = models.resnet18(pretrained=True)
-        # self.encoder_t3_start = self.get_model(resnet5)
-        # resnet6 = models.resnet18(pretrained=True)
-        # self.encoder_t3_end = self.get_model(resnet6)
+        resnet3 = models.resnet18(pretrained=True)
+        self.encoder_t2_start = self.get_model(resnet3)
+        resnet4 = models.resnet18(pretrained=True)
+        self.encoder_t2_end = self.get_model(resnet4)
+        #resnet5 = models.resnet18(pretrained=True)
+        #self.encoder_t3_start = self.get_model(resnet5)
+        #resnet6 = models.resnet18(pretrained=True)
+        #self.encoder_t3_end = self.get_model(resnet6)
+        
         self.in_feature = resnet1.fc.in_features
         # self.fc = nn.Linear(3 * self.in_feature + 4, 1)  # 全连接层输出为单一值
         # self.bn = nn.BatchNorm1d(1)
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=0.5),
-            nn.Linear(2 * self.in_feature + 4, 20),
+            nn.Linear(4 * self.in_feature + 4, 20),
             nn.ELU(),
             nn.Linear(20, 20),
             nn.ELU(),
@@ -68,7 +69,8 @@ class pCRModel(nn.Module):
         
         f_t1_start = self.encoder_t1_start(x['t1_start'])
         f_t1_end = self.encoder_t1_end(x['t1_end'])
-
+        f_t2_start = self.encoder_t2_start(x['t2_start'])
+        f_t2_end = self.encoder_t2_end(x['t2_end'])
         
 
         # print("Shape of f_t1_start:", f_t1_start.shape)
@@ -94,9 +96,13 @@ class pCRModel(nn.Module):
 
 
        # 将两个模态的特征以及深度卷积结果拼接在一起
-        f_con = torch.cat([torch.flatten(f_t1_start, start_dim=1),
+        f_con = torch.cat([
+                           torch.flatten(f_t1_start, start_dim=1),
+            
                            torch.flatten(f_t1_end, start_dim=1),
-
+                           #torch.flatten(f_t1_start, start_dim=1),
+                           torch.flatten(f_t2_start, start_dim=1),
+                           torch.flatten(f_t2_end, start_dim=1),
                     
                            x['bef_afp'].unsqueeze(1), x['bef_dcp'].unsqueeze(1), x['aft_afp'].unsqueeze(1), x['aft_dcp'].unsqueeze(1)], dim=1)
         logits = self.classifier(f_con)

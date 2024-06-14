@@ -52,39 +52,44 @@ class pCR_Trainer(Basic_Trainer):
         for batch_idx, data in enumerate(self.train_loader):
             data['t1_start'] = data['t1_start'].cuda().float()
             data['t1_end'] = data['t1_end'].cuda().float()
-            #data['t2_start'] = data['t2_start'].cuda().float()
-             #data['t2_end'] = data['t2_end'].cuda().float()
-            #data['t3_start'] = data['t3_start'].cuda().float()
-            #data['t3_end'] = data['t3_end'].cuda().float()
-            batch_size,channels, _, _ = data['t1_start'].size()
+            data['t2_start'] = data['t2_start'].cuda().float()
+            data['t2_end'] = data['t2_end'].cuda().float()
+        
+        #    #data['t3_start'] = data['t3_start'].cuda().float()
+        #    #data['t3_end'] = data['t3_end'].cuda().float()
+        #    batch_size,channels, _, _ = data['t1_start'].size()
 
-            output = []
-            for d in range(channels):
-                feature_map_start_channel = data['t1_start'][:,d, :, :].unsqueeze(1)  # 扩展维度以匹配卷积操作要求
-                feature_map_end_channel = data['t1_end'][:,d, :, :].unsqueeze(1)     # 扩展维度以匹配卷积操作要求
+        #    output = []
+        #    for d in range(channels):
+        #        feature_map_start_channel = data['t1_start'][:,d, :, :].unsqueeze(1)  # 扩展维度以匹配卷积操作要求
+        #        feature_map_end_channel = data['t1_end'][:,d, :, :].unsqueeze(1)     # 扩展维度以匹配卷积操作要求
 
-                conv_result = F.conv2d(feature_map_start_channel, feature_map_end_channel)
-                output.append(conv_result)
+        #        conv_result = F.conv2d(feature_map_start_channel, feature_map_end_channel)
+        #        output.append(conv_result)
     
-            # 将每个通道的卷积结果拼接成一维向量
-            output = torch.cat(output, dim=1)
+        #    # 将每个通道的卷积结果拼接成一维向量
+        #    output = torch.cat(output, dim=1)
             
             #print(output.size)
             #print(output.shape)
-            output=output.squeeze(3).squeeze(2)
-            correlation_matrix = torch.corrcoef(output.T)
-            mean_correlation = correlation_matrix.mean()
+        #    output=output.squeeze(3).squeeze(2)
+        #    correlation_matrix = torch.corrcoef(output.T)
+        #    mean_correlation = correlation_matrix.mean()
             
-            print(mean_correlation.item())
+        #    print(mean_correlation.item())
             
             # add afp and dcp
             data['bef_afp'] = data['bef_afp'].cuda().float()
             data['bef_dcp'] = data['bef_dcp'].cuda().float()
             data['aft_afp'] = data['aft_afp'].cuda().float()
             data['aft_dcp'] = data['aft_dcp'].cuda().float()
-            data['output']=mean_correlation.item()
-            data['t1_start']=data['t1_start'] *  data['output']
-            data['t1_end']=data['t1_end'] *  data['output']
+            
+            #data['output']=mean_correlation.item()
+            #data['t1_start']=data['t1_start'] *  data['output']
+            #data['t1_end']=data['t1_end'] *  data['output']
+
+            
+
 
             gt = data['gt'].cuda()
             logits = model(data)
@@ -119,8 +124,10 @@ class pCR_Trainer(Basic_Trainer):
                 data['t1_start'] = data['t1_start'].cuda().float()
                 data['t1_end'] = data['t1_end'].cuda().float()
                 # print(data['t1_start'].shape)
-                # data['t2_start'] = data['t2_start'].cuda().float()
-                #data['t2_end'] = data['t2_end'].cuda().float()
+                
+                data['t2_start'] = data['t2_start'].cuda().float()
+                data['t2_end'] = data['t2_end'].cuda().float()
+                
                 #data['t3_start'] = data['t3_start'].cuda().float()
                 #data['t3_end'] = data['t3_end'].cuda().float()
                 # add afp and dcp
@@ -168,8 +175,10 @@ class pCR_Trainer(Basic_Trainer):
 
                 data['t1_start'] = data['t1_start'].cuda().float()
                 data['t1_end'] = data['t1_end'].cuda().float()
-                # data['t2_start'] = data['t2_start'].cuda().float()
-                # data['t2_end'] = data['t2_end'].cuda().float()
+                
+                data['t2_start'] = data['t2_start'].cuda().float()
+                data['t2_end'] = data['t2_end'].cuda().float()
+                
                 # data['t3_start'] = data['t3_start'].cuda().float()
                 # data['t3_end'] = data['t3_end'].cuda().float()
 
@@ -199,7 +208,7 @@ class pCR_Trainer(Basic_Trainer):
             self.logger.info('test accuracy: {:.4f} \t f1 score: {:.4f}'.format(results_test["accuracy"], results_test["f1"]))
             self.logger.info('test precision: {:.4f} \t test recall: {:.4f}'.format(results_test["precision"], results_test["recall"]))
             self.logger.info('test sensitivity: {:.4f} \t test specificity: {:.4f}'.format(results_test["sensitivity"], results_test["specificity"]))
-
+            
         y_pred_res= [] # 创建一个空列表
         for value in results_df.predicted_label.values.astype(int):
             y_pred_res.append(value)# 将值添加到列表中
@@ -215,24 +224,21 @@ class pCR_Trainer(Basic_Trainer):
             y_true.append(str(num))
         C = confusion_matrix(y_true, y_pred, labels=['0','1']) # 可将'1'等替换成自己的类别，如'cat'。
         plt.matshow(C, cmap=plt.cm.Reds) # 根据最下面的图按自己需求更改颜色
-        
         TP_index = [i for i in range(len(y_pred)) if y_pred[i] == '1' and y_true[i] == '1']
         TN_index = [i for i in range(len(y_pred)) if y_pred[i] == '0' and y_true[i] == '0']
         FP_index = [i for i in range(len(y_pred)) if y_pred[i] == '1' and y_true[i] == '0']
         FN_index = [i for i in range(len(y_pred)) if y_pred[i] == '0' and y_true[i] == '1']
-        print("TP_index",TP_index)
-        print("TN_index",TN_index)
-        print("FP_index",FP_index)
-        print("FN_index",FN_index)
+        #print("TP_index",TP_index)
+        #print("TN_index",TN_index)
+        #print("FP_index",FP_index)
+        #print("FN_index",FN_index)
+        
         for i in range(len(C)):
             for j in range(len(C)):
                 plt.annotate(C[j, i], xy=(i, j), horizontalalignment='center', verticalalignment='center')
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         #plt.show()
-        if plt.savefig==True:
-            plt.savefig("../Gradcam-output/confusion_matrix/T2fold2_lr3_r18.png")
-
-
+        plt.savefig("./Gradcam-output/T2fold0_lr3_ResNet50.png")
 
         return results_test

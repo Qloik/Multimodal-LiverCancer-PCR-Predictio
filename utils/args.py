@@ -3,11 +3,13 @@ import argparse
 def base_arg():
     parser = argparse.ArgumentParser(description='MVI diagnosis')
     parser.add_argument('--dataset', default='pCR', choices=('pCR'))
-    # parser.add_argument('--data_dir', default='pCR_T1_ann_imgs_0318')
-    parser.add_argument('--data_dir', default='T2_ann_imgs_0414')
+    #parser.add_argument('--data_dir', default='T1_ann_imgs_0318')
+    #parser.add_argument('--data_dir', default='T1V_ann_imgs_0501')
+    parser.add_argument('--data_dir', default='T2_ann_imgs_0501')
+    # parser.add_argument('--data_dir', default='T2+T1V_0501')
     # parser.add_argument('--data_dir', default='T1+T2+T1V')
-    parser.add_argument('--fold', default=0, type=int)
-
+    parser.add_argument('--fold', default=1, type=int)
+    
     parser.add_argument('--arch', default="pCR", choices=('pCR'))
     parser.add_argument('--gpu', default=0, type=int, help='gpu ID')
 
@@ -25,7 +27,7 @@ def base_arg():
 def _get_args():
     parser = base_arg()
     parser.add_argument('--logdir', default='', type=str)
-    parser.add_argument('--batch_size', default=8, type=int)# 32
+    parser.add_argument('--batch_size', default=32, type=int)# 32
     parser.add_argument('--num_workers', default=15, type=int)
     parser.add_argument('--channel', default=3, type=int)
     # optimizer
@@ -75,6 +77,3 @@ def _get_args_test():
     args = parser.parse_args()
     args = backward_args(args)
     return args
-
-
-
