@@ -1,0 +1,103 @@
+import os
+import shutil
+
+# 原始文件夹路径
+source_folder = "./T2_0501"
+
+# 目标文件夹路径
+destination_folder = "./data_analyse/end/TN"
+
+# 文件名列表
+file_names = [
+    "A26_0_end_T2_1.png",
+    "A5_0_end_T2_4.png",
+    "A51_0_end_T2_2.png",
+    "A103_0_end_T2_2.png",
+    "A15_0_end_T2_4.png",
+    "A15_0_end_T2_1.png",
+    "A82_0_end_T2_2.png",
+    "A55_0_end_T2_1.png",
+    "A27_0_end_T2_4.png",
+    "A53_0_end_T2_4.png",
+    "A27_0_end_T2_3.png",
+    "A15_0_end_T2_2.png",
+    "A51_0_end_T2_1.png",
+    "A53_0_end_T2_3.png",
+    "A48_0_end_T2_1.png",
+    "A5_0_end_T2_3.png",
+    "A26_0_end_T2_4.png",
+    "A44_0_end_T2_4.png",
+    "A82_0_end_T2_0.png",
+    "A15_0_end_T2_0.png",
+    "A48_0_end_T2_4.png",
+    "A4_0_end_T2_2.png",
+    "A82_0_end_T2_3.png",
+    "A43_0_end_T2_1.png",
+    "A9_0_end_T2_2.png",
+    "A25_0_end_T2_2.png",
+    "A9_0_end_T2_0.png",
+    "A4_0_end_T2_0.png",
+    "A5_0_end_T2_0.png",
+    "A103_0_end_T2_1.png",
+    "A82_0_end_T2_4.png",
+    "A51_0_end_T2_4.png",
+    "A44_0_end_T2_1.png",
+    "A43_0_end_T2_2.png",
+    "A44_0_end_T2_0.png",
+    "A55_0_end_T2_3.png",
+    "A63_0_end_T2_4.png",
+    "A4_0_end_T2_3.png",
+    "A44_0_end_T2_3.png",
+    "A53_0_end_T2_1.png",
+    "A103_0_end_T2_0.png",
+    "A63_0_end_T2_2.png",
+    "A26_0_end_T2_2.png",
+    "A99_0_end_T2_2.png",
+    "A99_0_end_T2_0.png",
+    "A55_0_end_T2_4.png",
+    "A63_0_end_T2_1.png",
+    "A99_0_end_T2_1.png",
+    "A9_0_end_T2_3.png",
+    "A5_0_end_T2_1.png",
+    "A15_0_end_T2_3.png",
+    "A48_0_end_T2_0.png",
+    "A99_0_end_T2_4.png",
+    "A9_0_end_T2_1.png",
+    "A27_0_end_T2_1.png",
+    "A25_0_end_T2_1.png",
+    "A26_0_end_T2_3.png",
+    "A48_0_end_T2_3.png",
+    "A27_0_end_T2_2.png",
+    "A55_0_end_T2_0.png",
+    "A82_0_end_T2_1.png",
+    "A51_0_end_T2_0.png",
+    "A43_0_end_T2_0.png",
+    "A43_0_end_T2_4.png",
+    "A48_0_end_T2_2.png",
+    "A103_0_end_T2_3.png",
+    "A25_0_end_T2_3.png",
+    "A63_0_end_T2_3.png",
+    "A99_0_end_T2_3.png",
+    "A4_0_end_T2_1.png",
+    "A53_0_end_T2_2.png",
+    "A4_0_end_T2_4.png",
+    "A51_0_end_T2_3.png",
+    "A5_0_end_T2_2.png",
+    "A9_0_end_T2_4.png",
+    "A26_0_end_T2_0.png",
+    "A63_0_end_T2_0.png",
+    "A27_0_end_T2_0.png",
+    "A43_0_end_T2_3.png",
+    "A55_0_end_T2_2.png",
+    "A53_0_end_T2_0.png",
+    "A44_0_end_T2_2.png",
+    "A25_0_end_T2_4.png",
+    "A25_0_end_T2_0.png",
+    "A103_0_end_T2_4.png"
+]
+
+# 遍历文件名列表，并复制文件
+for file_name in file_names:
+    source_file_path = os.path.join(source_folder, file_name)
+    destination_file_path = os.path.join(destination_folder, file_name)
+    shutil.copyfile(source_file_path, destination_file_path)
