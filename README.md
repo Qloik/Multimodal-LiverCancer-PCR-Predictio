@@ -1,19 +1,58 @@
-同济大学软件工程2024届毕业设计——基于多时间点MRI影像的肝癌介入治疗疗效预测方法研究
+# Treatment Efficacy Prediction for Liver Cancer Using Multi-timepoint MRI
+
+* A Deep Learning Project, Tongji University (2024)*
+
+## Writer
+
+Yifan Fu
+
+## Background
+
+Neoadjuvant therapy for liver cancer aims to reduce tumor size before surgery. However, treatment effectiveness varies among patients. This project develops an AI-powered prediction system to help evaluate treatment efficacy using medical imaging and clinical data.
+
+## Project Overview
+
+A deep learning approach to predict the efficacy of neoadjuvant therapy for liver cancer patients using:
+* Multi-sequence MRI images from multiple timepoints
+* Clinical blood test data (tumor markers)
+* Deep neural networks for medical image analysis
+
+## Technical Approach
+
+### Data Processing
+* Multi-modal data integration from:
+   * Multi-sequence MRI scans (multiple timepoints)
+   * Clinical blood test results
+   * Treatment outcome labels
+* Medical image preprocessing pipeline
+* Feature extraction from time-series medical data
+
+### Model Architecture
+* Deep learning framework for multi-timepoint MRI analysis
+* Multi-modal data fusion strategies
+* Classification network for treatment outcome prediction:
+   * Class 0: Complete necrosis
+   * Class 1: Stable disease
+   * Class 2: Tumor progression
+
+### Training & Evaluation
+* Training on single-hospital dataset
+* Validation metrics for medical prediction tasks
+* Model performance analysis on real clinical cases
+
+## Dataset
+
+The training dataset includes:
+* Longitudinal MRI scans from multiple treatment timepoints
+* Clinical blood test records
+* Physician-annotated treatment outcomes
+
+**Access:**  
+Link: https://pan.baidu.com/s/1FWV4pNIZ9bYIajUQOjq9rg?pwd=op7x  
+Password: op7x
+
+
+**Keywords:** Deep Learning, Medical Image Analysis, Multi-timepoint MRI, Treatment Outcome Prediction
 
 
 
-背景：一直以来，化学疗法（chemotherapy）是很多癌症患者的一种 “辅助（adjuvant）” 疗法，具体操作是患者在手术（surgery）摘除肿瘤后接受化疗，以杀死体内残留的微小肿瘤细胞（microscopic tumor cells）。近来，化疗也适用于一种 “新辅助” 的条件下，帮助患者**在进行手术摘除肿瘤前，使得肿瘤缩小**。肝细胞癌**新辅助治疗**主要目的为缩小肿瘤体积、降低手术难度和减少术后复发，但存在肿瘤进展、丧失手术机会等潜在风险。
-
-新辅助治疗也存在如下问题：（1）部分患者有因药物不良反应、肿瘤进展，或发生治疗相关严重不良反应而最终失去手术治疗机会。（2）疗效果不明显，延误初始治疗时间。
-
-针对第2个问题，我们提出利用治疗前后的**多序列MRI影像**以及**临床血检数据**（肿瘤标志物等）进行肝癌新辅助治疗疗效的预测。
-
-目标：通过给定某病人新辅助治疗前、或者治疗进程中若干次时间节点的MRI成像图像，以及临床数据，再根据医生标定的该病人新辅助治疗**疗效数据**（标签，这个标签可以是多个，比如用0表示完全萎缩坏死，1表示维持原状，2表示肿瘤进展了。），设计并训练一个深度学习网络模型，并在同一家医院收集的数据进行测试，实现更准确地自动化肝癌新辅助治疗疗效的预测。
-
-> 关键词：预测、若干次时间节点介入、肝癌新辅助（前置）化疗的疗效
-
-> 数据：各个时间节点的**多序列MRI影像、临床血检数据、疗效数据**
-
-
-数据链接：链接：https://pan.baidu.com/s/1FWV4pNIZ9bYIajUQOjq9rg?pwd=op7x 
-提取码：op7x 
